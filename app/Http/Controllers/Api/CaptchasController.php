@@ -12,17 +12,17 @@ class CaptchasController extends Controller
 {
     public function store(CaptchaRequest $request,CaptchaBuilder $captchaBuilder)
     {
-        $key = 'captcha_'.Str::random(15);
+        $key = 'captcha_' . Str::random(15);
         $captchaCode = $captchaBuilder->build();
-        $expiredAt = now()->addMinute(3);
+        $expiredAt = now()->addMinute(4);
         $phone = $request->phone;
 
-        \Cache::put($key,['phone' => $phone,'code' => $captchaCode->getPhrase()],$expiredAt);
+        \Cache::put($key,['phone'=> $phone,'code' => $captchaCode->getPhrase()],$expiredAt);
 
         return response()->json([
             'captcha_key' => $key,
-            'captcha_image_content' => $captchaCode->inline(),
-            'expired_at' => $expiredAt->toDateTimeString(),
-        ])->setStatusCode(201);
+            'captcha_code' => $captchaCode->inline(),
+            'expired_at' => $expiredAt->toDateTimeString()
+        ]);
     }
 }

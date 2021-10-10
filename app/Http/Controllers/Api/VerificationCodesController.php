@@ -18,7 +18,7 @@ class VerificationCodesController extends Controller
         }
 
         if (!hash_equals(strtolower($captchaData['code']),$request->captcha_code)) {
-            // 删除图形验证码
+            //删除图形验证码
             \Cache::forget($request->captcha_key);
             throw new AuthenticationException('图形验证码错误');
         }
@@ -44,7 +44,7 @@ class VerificationCodesController extends Controller
             }
         }
 
-        $key = 'verificationCode_'.Str::random(15);
+        $key = 'verificationCode_' . Str::random(15);
         $expiredAt = now()->addMinute(5);
 
         \Cache::put($key,['phone' => $phone,'code' => $code],$expiredAt);
@@ -52,8 +52,7 @@ class VerificationCodesController extends Controller
 
         return response()->json([
             'key' => $key,
-            'expired_at' => $expiredAt->toDateTimeString(),
+            'expired_at' => $expiredAt->toDateTimeString()
         ])->setStatusCode(201);
-
     }
 }
