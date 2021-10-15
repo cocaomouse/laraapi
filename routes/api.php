@@ -38,17 +38,26 @@ Route::prefix('v1')->name('api.v1.')->group(function () {
             ->where('social_type', 'wechat')
             ->name('socials.authorizations.store');
         // 登录
-        Route::post('authorizations',[AuthorizationsController::class,'store'])
+        Route::post('authorizations', [AuthorizationsController::class, 'store'])
             ->name('authorizations.store');
         // 刷新token
-        Route::put('authorizations/current',[AuthorizationsController::class,'update'])
+        Route::put('authorizations/current', [AuthorizationsController::class, 'update'])
             ->name('authorizations.update');
         // 删除token
-        Route::delete('authorizations/current',[AuthorizationsController::class,'destroy'])
+        Route::delete('authorizations/current', [AuthorizationsController::class, 'destroy'])
             ->name('authorizations.destroy');
     });
     Route::middleware('throttle:' . config('api.rate_limits.access'))->group(function () {
+        // 游客可以访问的接口
 
+        // 用户详情
+        Route::get('users/{user}', [UsersController::class, 'show'])
+            ->name('users.show');
+        // 登陆后可以访问的接口
+        Route::middleware('auth:api')->group(function () {
+            Route::get('user', [UsersController::class, 'me'])
+                ->name('user.show');
+        });
     });
 });
 

@@ -38,7 +38,7 @@ class GenerateToken extends Command
      */
     public function handle()
     {
-        $userId = $this->ask('输入用户 id');
+        $userId = $this->ask('请输入用户id');
 
         $user = User::find($userId);
 
@@ -46,8 +46,6 @@ class GenerateToken extends Command
             return $this->error('用户不存在');
         }
 
-        //一年以后过期 单位:分钟
-        $ttl = 365*24*60;
-        $this->info(auth('api')->setTTL($ttl)->login($user));
+        $this->info(auth('api')->setTTL(365*24*60)->login($user));
     }
 }

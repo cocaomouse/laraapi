@@ -66,7 +66,8 @@ class AuthorizationsController extends Controller
             $credentials['phone'] = $username;
 
         $credentials['password'] = $request->password;
-        $token = \Auth::guard('api')->attempt($credentials);
+
+        $token = \Auth::gurad('api')->attempt($credentials);
         if (!$token) {
             throw new AuthenticationException('用户名或密码错误');
         }
@@ -77,7 +78,7 @@ class AuthorizationsController extends Controller
     public function update()
     {
         $token = auth('api')->refresh();
-        return $this->respondWithToken($token);
+        return $this->respondWithToken($token)->setStatusCode(201);
     }
 
     public function destroy()
@@ -85,15 +86,15 @@ class AuthorizationsController extends Controller
         auth('api')->logout();
         return response()->json([
             'message' => '已退出'
-        ]);
+        ])->setStatusCode(201);
     }
 
-    protected function respondWithToken($token)
+    private function respondWithToken($token)
     {
         return response()->json([
             'access_token' => $token,
             'token_type' => 'Bearer',
-            'expires_in' => auth('api')->factory()->getTTL()*60
+            'expires_in' => auth('api')->factory()->getTTL()*60,
         ]);
     }
 }
