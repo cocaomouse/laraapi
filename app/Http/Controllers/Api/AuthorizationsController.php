@@ -67,7 +67,7 @@ class AuthorizationsController extends Controller
 
         $credentials['password'] = $request->password;
 
-        $token = \Auth::gurad('api')->attempt($credentials);
+        $token = \Auth::guard('api')->attempt($credentials);
         if (!$token) {
             throw new AuthenticationException('用户名或密码错误');
         }
