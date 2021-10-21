@@ -68,7 +68,7 @@ Route::prefix('v1')->name('api.v1.')->group(function () {
             Route::get('user', [UsersController::class, 'me'])
                 ->name('user.show');
             // 编辑登录用户信息
-            Route::patch('user', [UsersController::class, 'update'])
+            Route::put('user', [UsersController::class, 'update'])
                 ->name('user.update');
             // 上传图片
             Route::post('images', [ImagesController::class, 'store'])
