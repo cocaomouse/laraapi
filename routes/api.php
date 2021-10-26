@@ -59,6 +59,9 @@ Route::prefix('v1')->name('api.v1.')->group(function () {
         // 分类列表
         Route::get('categories', [CategoriesController::class, 'index'])
             ->name('categories.index');
+        // 某个用户发表的话题
+        Route::get('users/{user}/topics',[TopicsController::class,'userIndex'])
+            ->name('users.topics.index');
         // 话题列表，详情
         Route::resource('topics', TopicsController::class)->only(['index', 'show']);
 
