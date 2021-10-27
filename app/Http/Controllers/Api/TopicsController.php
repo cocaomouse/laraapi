@@ -78,9 +78,14 @@ class TopicsController extends Controller
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($topicId)
     {
-        //
+        //$topic->load('user','category');
+        $topic = QueryBuilder::for(Topic::class)
+            ->allowedIncludes('user','category')
+            ->findOrFail($topicId);
+
+        return new TopicResource($topic);
     }
 
     /**
