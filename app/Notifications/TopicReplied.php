@@ -21,6 +21,7 @@ class TopicReplied extends Notification implements ShouldQueue
      */
     public function __construct(Reply $reply)
     {
+        // 注入回复实体，方便 toDatabase 方法中的使用
         $this->reply = $reply;
     }
 
@@ -33,7 +34,8 @@ class TopicReplied extends Notification implements ShouldQueue
     public function via($notifiable)
     {
         // 开启通知的频道
-        return ['database','mail'];
+        return ['database'];
+        //return ['database','mail'];
     }
 
     /**
