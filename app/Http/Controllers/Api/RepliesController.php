@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Queries\ReplyQuery;
 use App\Models\Topic;
 use App\Models\Reply;
 use App\Models\User;
@@ -11,6 +12,13 @@ use App\Http\Requests\Api\ReplyRequest;
 
 class RepliesController extends Controller
 {
+    public function index($topicId, ReplyQuery $replyQuery)
+    {
+        $replies = $replyQuery->where('topic_id', $topicId)->paginate();
+
+        return ReplyResource::collection($replies);
+    }
+
     public function store(ReplyRequest $request, Topic $topic, Reply $reply)
     {
         $reply->content = $request->contents;
@@ -27,7 +35,7 @@ class RepliesController extends Controller
             abort(404);
         }
 
-        $this->authorize('destroy',$reply);
+        $this->authorize('destroy', $reply);
         $reply->delete();
 
         return response()->json([
@@ -38,5 +46,12 @@ class RepliesController extends Controller
         /*return response()->json([
             'message' => '删除成功',
         ])->setStatusCode(204);*/
+    }
+
+    public function userIndex($userId,ReplyQuery $replyQuery)
+    {
+        $replies = $replyQuery->where('user_id',$userId)->paginate();
+
+        return ReplyResource::collection($replies);
     }
 }
