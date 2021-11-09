@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use App\Http\Resources\NotificationResource;
+use Illuminate\Notifications\DatabaseNotification;
 
 class NotificationsController extends Controller
 {
@@ -25,8 +26,13 @@ class NotificationsController extends Controller
     {
         $request->user()->markAsRead();
 
-        return response()->json([
-            'message' => '标记为已读'
-        ])->setStatusCode(201);
+        return response('标记为已读',204);
+    }
+
+    public function readOne(Request $request,DatabaseNotification $notification)
+    {
+        $notification->id ? $request->user()->markAsRead($notification) : $request->user()->markAsRead();
+
+        return response('标记为已读',204);
     }
 }

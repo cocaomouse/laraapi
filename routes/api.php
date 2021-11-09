@@ -98,9 +98,12 @@ Route::prefix('v1')->name('api.v1.')->group(function () {
             // 通知统计
             Route::get('notifications/stats',[NotificationsController::class,'stats'])
                 ->name('notifications.stats');
-            // 标记未读消息为已读
+            // 标记所有未读消息为已读
             Route::patch('user/read/notifications',[NotificationsController::class,'read'])
                 ->name('notifications.read');
+            // 标记指定单条消息为已读
+            Route::put('user/read/notifications/{notification}',[NotificationsController::class,'readOne'])
+                ->name('notifications.readOne');
         });
     });
 });

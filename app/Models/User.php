@@ -10,6 +10,7 @@ use Illuminate\Auth\MustVerifyEmail as MustVerifyEmailTrait;
 use Auth;
 use Spatie\Permission\Traits\HasRoles;
 use Tymon\JWTAuth\Contracts\JWTSubject;
+use Illuminate\Notifications\DatabaseNotification;
 
 class User extends Authenticatable implements MustVerifyEmailContract, JWTSubject
 {
@@ -91,11 +92,19 @@ class User extends Authenticatable implements MustVerifyEmailContract, JWTSubjec
         $this->laravelNotify($instance);
     }
 
-    public function markAsRead()
+    public function markAsRead(DatabaseNotification $notification = null)
     {
-        $this->notification_count = 0;
-        $this->save();
-        $this->unreadNotifications->markAsRead();
+        if ($notification) {
+            // 标记单条为已读
+            $this->decrement('notification_count');
+            //$this->save();
+            $notification->markAsRead();
+        } else {
+            $this->notification_count = 0;
+            $this->save();
+            $this->unreadNotifications->markAsRead();
+        }
+
     }
 
     public function setPasswordAttribute($value)
