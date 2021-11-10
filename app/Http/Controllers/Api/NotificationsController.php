@@ -24,15 +24,36 @@ class NotificationsController extends Controller
 
     public function read(Request $request)
     {
-        $request->user()->markAsRead();
+        // 判断当前用户未读消息数量是否为0
+        if ($request->user()->notification_count == 0) {
+            return $this->checkNotification();
+        }
 
-        return response('标记为已读',204);
+        $request->user()->markAsRead();
+        return response('标记为已读', 204);
     }
 
-    public function readOne(Request $request,DatabaseNotification $notification)
+    public function readOne(Request $request, DatabaseNotification $notification)
     {
-        $notification->id ? $request->user()->markAsRead($notification) : $request->user()->markAsRead();
+        // 判断此条消息是否属于当前用户
+        if ($request->user()->id != $notification->notifiable_id) {
+            return response()->json([
+                'message' => '无消息权限'
+            ])->setStatusCode(401);
+        }
+        // 判断当前用户未读消息数量是否为0
+        if ($request->user()->notification_count == 0) {
+            return $this->checkNotification();
+        }
 
-        return response('标记为已读',204);
+        $notification->id ? $request->user()->markAsRead($notification) : $request->user()->markAsRead();
+        return response('标记为已读', 204);
+    }
+
+    private function checkNotification()
+    {
+        return response()->json([
+            'message' => '当前用户无未读消息',
+        ])->setStatusCode(201);
     }
 }
