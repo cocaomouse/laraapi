@@ -11,7 +11,7 @@ class Link extends Model
     use HasFactory;
 
     protected $fillable = ['title','link'];
-    public $cache_key = 'larabbs_links';
+    public $cache_key = 'laraapi_links';
     protected $cache_expire_in_seconds = 1440*60;
 
     public function getAllCached()

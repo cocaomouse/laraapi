@@ -12,6 +12,7 @@ use App\Http\Controllers\Api\TopicsController;
 use App\Http\Controllers\Api\RepliesController;
 use App\Http\Controllers\Api\NotificationsController;
 use App\Http\Controllers\Api\PermissionsController;
+use App\Http\Controllers\Api\LinksController;
 
 /*
 |--------------------------------------------------------------------------
@@ -73,6 +74,9 @@ Route::prefix('v1')->name('api.v1.')->group(function () {
         // 某个用户的回复列表
         Route::get('users/{user}/replies',[RepliesController::class,'userIndex'])
             ->name('users.replies.index');
+        // 资源推荐
+        Route::get('links',[linksController::class,'index'])
+            ->name('links.index');
 
         // 登陆后可以访问的接口
         Route::middleware('auth:api')->group(function () {
