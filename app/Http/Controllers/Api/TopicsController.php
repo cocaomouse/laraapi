@@ -20,7 +20,7 @@ class TopicsController extends Controller
     public function index(Request $request, Topic $topic)
     {
         $topics = QueryBuilder::for(Topic::class)
-            ->allowedIncludes('user', 'category')
+            ->allowedIncludes('user', 'user.roles', 'category')
             ->allowedFilters([
                 'title',
                 AllowedFilter::exact('category_id'),
@@ -31,12 +31,12 @@ class TopicsController extends Controller
         return TopicResource::collection($topics);
     }
 
-    public function userIndex(Request $request,User $user)
+    public function userIndex(Request $request, User $user)
     {
         $query = $user->topics()->getQuery();
 
         $topics = QueryBuilder::for($query)
-            ->allowedIncludes('user','category')
+            ->allowedIncludes('user', 'category')
             ->allowedFilters([
                 'title',
                 AllowedFilter::exact('category_id'),
@@ -82,7 +82,7 @@ class TopicsController extends Controller
     {
         //$topic->load('user','category');
         $topic = QueryBuilder::for(Topic::class)
-            ->allowedIncludes('user','category')
+            ->allowedIncludes('user', 'category')
             ->findOrFail($topicId);
 
         return new TopicResource($topic);

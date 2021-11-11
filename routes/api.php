@@ -11,6 +11,7 @@ use App\Http\Controllers\Api\CategoriesController;
 use App\Http\Controllers\Api\TopicsController;
 use App\Http\Controllers\Api\RepliesController;
 use App\Http\Controllers\Api\NotificationsController;
+use App\Http\Controllers\Api\PermissionsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -104,6 +105,9 @@ Route::prefix('v1')->name('api.v1.')->group(function () {
             // 标记指定单条消息为已读
             Route::put('user/read/notifications/{notification}',[NotificationsController::class,'readOne'])
                 ->name('notifications.readOne');
+            // 当前登录用户权限
+            Route::get('user/permissions',[PermissionsController::class,'index'])
+                ->name('user.permissions.index');
         });
     });
 });
