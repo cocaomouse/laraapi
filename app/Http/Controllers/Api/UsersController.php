@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Handlers\ImageUploadHandler;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\RoleResource;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Http\Resources\UserResource;
@@ -62,5 +63,22 @@ class UsersController extends Controller
         $user->update($attributes);
 
         return (new UserResource($user))->showSensitiveFields();
+    }
+
+    public function activedIndex(User $user)
+    {
+        /*UserResource::wrap('data');
+        return UserResource::collection($user->getActiveUsers());*/
+        $usersInfo = $user->getActiveUsers();
+
+        foreach ($usersInfo as $key => $val) {
+            $activedUser[$key]['id'] = $val->id;
+            $activedUser[$key]['name'] = $val->name;
+            $activedUser[$key]['phone'] = $val->phone ? true : false;
+            $activedUser[$key]['email'] = $val->email ? true : false;
+            $activedUser[$key]['avatar'] = $val->avatar;
+            $activedUser[$key]['wechat'] = ($val->weixin_unionid || $val->weixin_openid) ? true : false;
+        }
+        return $activedUser;
     }
 }

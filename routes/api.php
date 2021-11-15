@@ -77,6 +77,9 @@ Route::prefix('v1')->name('api.v1.')->group(function () {
         // 资源推荐
         Route::get('links',[linksController::class,'index'])
             ->name('links.index');
+        // 活跃用户
+        Route::get('actived/users', [UsersController::class,'activedIndex'])
+            ->name('actived.users.index');
 
         // 登陆后可以访问的接口
         Route::middleware('auth:api')->group(function () {

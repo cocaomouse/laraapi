@@ -84,6 +84,10 @@ trait ActiveUserHelper
                 $this->users[$topic_user->id]['avatar'] = $topic_user->avatar;
                 $this->users[$topic_user->id]['name'] = $topic_user->name;
                 $this->users[$topic_user->id]['id'] = $topic_user->id;
+                $this->users[$topic_user->id]['phone'] = $topic_user->phone;
+                $this->users[$topic_user->id]['email'] = $topic_user->email;
+                $this->users[$topic_user->id]['weixin_openid'] = $topic_user->weixin_openid;
+                $this->users[$topic_user->id]['weixin_unionid'] = $topic_user->weixin_unionid;
                 return $this->users;
             });
         }
@@ -112,6 +116,10 @@ trait ActiveUserHelper
                 $this->users[$reply_user->id]['avatar'] = $reply_user->avatar;
                 $this->users[$reply_user->id]['name'] = $reply_user->name;
                 $this->users[$reply_user->id]['id'] = $reply_user->id;
+                $this->users[$reply_user->id]['phone'] = $reply_user->phone;
+                $this->users[$reply_user->id]['email'] = $reply_user->email;
+                $this->users[$reply_user->id]['weixin_openid'] = $reply_user->weixin_openid;
+                $this->users[$reply_user->id]['weixin_unionid'] = $reply_user->weixin_unionid;
                 return $this->users;
             });
         }
