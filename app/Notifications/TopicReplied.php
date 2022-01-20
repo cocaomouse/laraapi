@@ -3,10 +3,12 @@
 namespace App\Notifications;
 
 use App\Models\Reply;
+use App\Notifications\Channels\JPushChannel;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use JPush\PushPayload;
 
 class TopicReplied extends Notification implements ShouldQueue
 {
@@ -34,7 +36,7 @@ class TopicReplied extends Notification implements ShouldQueue
     public function via($notifiable)
     {
         // 开启通知的频道
-        return ['database'];
+        return ['database',JPushChannel::class];
         //return ['database','mail'];
     }
 
@@ -91,5 +93,13 @@ class TopicReplied extends Notification implements ShouldQueue
         return [
             //
         ];
+    }
+
+    public function toJPush($notifiable,PushPayload $payload):PushPayload
+    {
+        return $payload
+            ->setPlatform('all')
+            ->addRegistrationId($notifiable->registration_id)
+            ->setNotificationAlert(strip_tags($this->reply->content));
     }
 }
