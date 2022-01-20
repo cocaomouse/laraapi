@@ -70,6 +70,7 @@ class TopicsController extends Controller
         $topic->save();
 
         return new TopicResource($topic);
+        //return $this->errorResponse(403,'你还没有通过认证',1003);
     }
 
     /**

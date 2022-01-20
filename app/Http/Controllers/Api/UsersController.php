@@ -71,6 +71,11 @@ class UsersController extends Controller
         return UserResource::collection($user->getActiveUsers());*/
         $usersInfo = $user->getActiveUsers();
 
+        if (!$usersInfo) {
+            return response()->json([
+                'message' => '无'
+            ]);
+        }
         foreach ($usersInfo as $key => $val) {
             $activedUser[$key]['id'] = $val->id;
             $activedUser[$key]['name'] = $val->name;
@@ -79,6 +84,6 @@ class UsersController extends Controller
             $activedUser[$key]['avatar'] = $val->avatar;
             $activedUser[$key]['wechat'] = ($val->weixin_unionid || $val->weixin_openid) ? true : false;
         }
-        return $activedUser;
+        return array_merge($activedUser);
     }
 }
