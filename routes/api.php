@@ -93,7 +93,7 @@ Route::prefix('v1')->namespace('Api')->middleware('change-locale')->name('api.v1
             Route::post('images', [ImagesController::class, 'store'])
                 ->name('images.store');
             // 发布话题
-            Route::resource('topics', TopicsController::class)->only(['store', 'update', 'destroy']);
+            //Route::resource('topics', TopicsController::class)->only(['store', 'update', 'destroy']);
             // 发布回复
             Route::post('topics/{topic}/replies',[RepliesController::class,'store'])
                 ->name('topics.replies.store');
